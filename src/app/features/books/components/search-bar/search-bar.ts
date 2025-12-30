@@ -7,6 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './search-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBar {
-
-}
+export class SearchBar {}

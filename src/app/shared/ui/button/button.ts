@@ -7,6 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './button.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Button {
-
-}
+export class Button {}

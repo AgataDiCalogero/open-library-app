@@ -7,6 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './spinner.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Spinner {
-
-}
+export class Spinner {}

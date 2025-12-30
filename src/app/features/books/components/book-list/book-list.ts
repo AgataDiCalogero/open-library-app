@@ -7,6 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList {
-
-}
+export class BookList {}
