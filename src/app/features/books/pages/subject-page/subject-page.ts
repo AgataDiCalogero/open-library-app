@@ -1,8 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged, switchMap } from 'rxjs';
+import { finalize } from 'rxjs';
 
 import { BooksRepository } from '../../data/books-repository';
 import { Book } from '../../../../shared/models/book';
@@ -11,7 +18,7 @@ import { BookList } from '../../components/book-list/book-list';
 
 @Component({
   selector: 'app-subject-page',
-  imports: [AsyncPipe, SearchBar, BookList],
+  imports: [SearchBar, BookList],
   templateUrl: './subject-page.html',
   styleUrl: './subject-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,14 +27,59 @@ export class SubjectPage {
   private readonly repo = inject(BooksRepository);
   private readonly router = inject(Router);
 
+  readonly limit = 24;
+  readonly offset = signal(0);
+  readonly booksAccumulated = signal<Book[]>([]);
+  readonly total = signal<number | null>(null);
+  readonly isInitialLoading = signal(false);
+  readonly isLoadingMore = signal(false);
+  readonly searchResetToken = signal(0);
+
+  readonly popularSubjects = [
+    'fantasy',
+    'romance',
+    'science_fiction',
+    'history',
+    'horror',
+    'poetry',
+    'children',
+    'mystery',
+    'biography',
+    'travel',
+  ];
+
+  readonly canLoadMore = computed(() => {
+    const total = this.total();
+    return total !== null && this.booksAccumulated().length < total;
+  });
+
   subject = input.required<string>();
 
-  books$ = toObservable(this.subject).pipe(
-    distinctUntilChanged(),
-    switchMap((subject) => this.repo.getSubjectBooks(subject))
-  );
+  constructor() {
+    effect(() => {
+      const subject = this.subject();
+      untracked(() => {
+        this.offset.set(0);
+        this.booksAccumulated.set([]);
+        this.total.set(null);
+        this.isLoadingMore.set(false);
+      });
 
-  onSearch(subject: string): void {
+      if (!subject) {
+        this.isInitialLoading.set(false);
+        return;
+      }
+
+      this.fetchPage(subject, 0, false);
+    });
+  }
+
+  onSearchFromInput(subject: string): void {
+    this.router.navigate(['/subjects', subject]);
+  }
+
+  onSearchFromChip(subject: string): void {
+    this.searchResetToken.update((value) => value + 1);
     this.router.navigate(['/subjects', subject]);
   }
 
@@ -35,5 +87,37 @@ export class SubjectPage {
     this.router.navigate(['/works', book.id], {
       queryParams: { subject: this.subject() },
     });
+  }
+
+  loadMore(): void {
+    if (!this.canLoadMore() || this.isLoadingMore() || this.isInitialLoading()) {
+      return;
+    }
+    const nextOffset = this.offset() + this.limit;
+    this.fetchPage(this.subject(), nextOffset, true);
+  }
+
+  formatSubjectLabel(subject: string): string {
+    return subject.replaceAll('_', ' ').replaceAll(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  private fetchPage(subject: string, offset: number, append: boolean): void {
+    const loadingSignal = append ? this.isLoadingMore : this.isInitialLoading;
+    loadingSignal.set(true);
+
+    this.repo
+      .getSubjectBooksPage(subject, this.limit, offset)
+      .pipe(finalize(() => loadingSignal.set(false)))
+      .subscribe({
+        next: (result) => {
+          this.total.set(result.total);
+          this.offset.set(offset);
+          if (append) {
+            this.booksAccumulated.update((current) => [...current, ...result.books]);
+          } else {
+            this.booksAccumulated.set(result.books);
+          }
+        },
+      });
   }
 }

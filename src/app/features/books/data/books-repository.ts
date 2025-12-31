@@ -1,8 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { catchError, shareReplay, tap, Observable, throwError } from 'rxjs';
 
-import { OpenLibraryApi } from '../../../core/api/open-library.api';
-import { Book } from '../../../shared/models/book';
+import { OpenLibraryApi, SubjectBooksResult } from '../../../core/api/open-library.api';
 import { WorkDetail } from '../../../shared/models/work-detail';
 
 @Injectable({
@@ -11,23 +10,24 @@ import { WorkDetail } from '../../../shared/models/work-detail';
 export class BooksRepository {
   private readonly api = inject(OpenLibraryApi);
 
-  private readonly subjectCache = new Map<string, Observable<Book[]>>();
+  private readonly subjectCache = new Map<string, Observable<SubjectBooksResult>>();
 
   private readonly workCache = new Map<string, Observable<WorkDetail>>();
 
   private readonly workSummary = new Map<string, { title: string; authors: string }>();
 
-  getSubjectBooks(subject: string): Observable<Book[]> {
-    const key = subject.trim().toLowerCase();
+  getSubjectBooksPage(subject: string, limit: number, offset: number): Observable<SubjectBooksResult> {
+    const normalized = subject.trim().toLowerCase();
+    const key = `${normalized}|${limit}|${offset}`;
 
     const cached$ = this.subjectCache.get(key);
     if (cached$) {
       return cached$;
     }
 
-    const req$ = this.api.getBooksBySubject(key).pipe(
-      tap((books) => {
-        for (const book of books) {
+    const req$ = this.api.getBooksBySubject(normalized, { limit, offset }).pipe(
+      tap((result) => {
+        for (const book of result.books) {
           this.workSummary.set(book.id, { title: book.title, authors: book.authors });
         }
       }),

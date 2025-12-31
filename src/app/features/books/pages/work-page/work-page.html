@@ -1,7 +1,11 @@
-<div class="mx-auto max-w-2xl p-4">
-  @if (workDetail$ | async; as work) {
-  <app-book-detail [work]="work" [summary]="summary()" (back)="goBack()" />
-  } @else {
-  <div class="text-sm text-zinc-400 animate-pulse">Loading details…</div>
-  }
+<div class="min-h-dvh bg-paper bg-gradient-to-b from-paper via-wash/40 to-paper">
+  <div class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    @if (workDetail$ | async; as work) {
+    <app-book-detail [work]="work" [summary]="summary()" (back)="goBack()" />
+    } @else {
+    <div class="animate-pulse rounded-2xl border border-ink/10 bg-white/80 p-6 text-sm text-ink/60 shadow-sm">
+      Loading details…
+    </div>
+    }
+  </div>
 </div>

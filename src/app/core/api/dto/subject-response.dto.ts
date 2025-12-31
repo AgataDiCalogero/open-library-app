@@ -10,5 +10,6 @@ export interface SubjectWorkDto {
 }
 
 export interface SubjectResponseDto {
+  work_count: number;
   works: SubjectWorkDto[];
 }

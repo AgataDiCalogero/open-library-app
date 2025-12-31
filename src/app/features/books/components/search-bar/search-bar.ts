@@ -10,6 +10,7 @@ import { Field, form } from '@angular/forms/signals';
 })
 export class SearchBar {
   value = input<string>('');
+  resetToken = input(0);
   searched = output<string>();
 
   private readonly formModel = signal({ subject: '' });
@@ -23,6 +24,13 @@ export class SearchBar {
       if (incoming !== current) {
         this.subjectField().value.set(incoming);
       }
+    });
+
+    effect(() => {
+      this.resetToken();
+      untracked(() => {
+        this.subjectField().value.set('');
+      });
     });
   }
 

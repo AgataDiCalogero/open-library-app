@@ -1,3 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@theme {
+  --color-brand: #49596b;
+  --color-paper: #f2f0e9;
+  --color-ink: #3e2723;
+  --color-wash: #f3ddc2;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-wash text-ink;
+  }
+
+  a {
+    @apply text-brand underline underline-offset-4 hover:text-brand/80;
+  }
+}
