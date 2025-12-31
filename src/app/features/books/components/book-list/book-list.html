@@ -1,1 +1,5 @@
-<p>book-list works!</p>
+<div class="space-y-2">
+  @for (book of books(); track book.id) {
+  <app-book-card [book]="book" (selectBook)="selectBook.emit(book)" />
+  }
+</div>

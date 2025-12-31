@@ -6,6 +6,7 @@ export interface SubjectWorkDto {
   key: string;
   title: string;
   authors: SubjectWorkAuthorDto[];
+  cover_id: number;
 }
 
 export interface SubjectResponseDto {

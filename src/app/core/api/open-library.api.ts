@@ -25,6 +25,7 @@ export class OpenLibraryApi {
           id: work.key.split('/').pop() ?? work.key,
           title: work.title,
           authors: (work.authors ?? []).map((author) => author.name).join(', ') || 'Unknown',
+          coverId: work.cover_id,
         }))
       )
     );
@@ -38,7 +39,7 @@ export class OpenLibraryApi {
         const description =
           typeof dto.description === 'string'
             ? dto.description
-            : dto.description?.value ?? 'No description available';
+            : (dto.description?.value ?? 'No description available');
         const coverId = dto.covers?.find((value) => value > 0);
         const idSource = dto.key?.trim() || workId;
 

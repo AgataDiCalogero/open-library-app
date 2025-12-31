@@ -1,4 +1,11 @@
 <div class="mx-auto max-w-xl p-4 space-y-4">
-  <app-search-bar />
-  <app-book-list [subject]="subject()" />
+  <app-search-bar [value]="subject()" (searched)="onSearch($event)" />
+
+  @if (books$ | async; as books) { @if (books.length === 0) {
+  <p class="text-sm text-gray-500">No books found.</p>
+  } @else {
+  <app-book-list [books]="books" (selectBook)="onOpenBook($event)" />
+  } } @else {
+  <p class="text-sm text-gray-400">Loading…</p>
+  }
 </div>
