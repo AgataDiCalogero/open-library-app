@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { SearchBar } from '../../components/search-bar/search-bar';
 import { BookList } from '../../components/book-list/book-list';
 
@@ -9,4 +9,6 @@ import { BookList } from '../../components/book-list/book-list';
   styleUrl: './subject-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubjectPage {}
+export class SubjectPage {
+  subject = input.required<string>();
+}

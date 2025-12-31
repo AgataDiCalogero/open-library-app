@@ -1,6 +1,6 @@
 <button type="button" (click)="back.emit()">Back</button>
 <h1>{{ summary()?.title ?? work().title }}</h1>
-<p>{{ summary()?.authors ?? 'Authors unavailable' }}</p>
+<p>{{ summary()?.authors ?? 'Unknown' }}</p>
 
 @if (coverUrl(); as url) {
 <img [src]="url" [alt]="work().title" />

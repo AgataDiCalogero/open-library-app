@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-book-list',
@@ -7,4 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookList {}
+export class BookList {
+  subject = input.required<string>();
+}
