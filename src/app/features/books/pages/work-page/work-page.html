@@ -1,5 +1,7 @@
-@if (workDetail$ | async; as work) {
-<app-book-detail [work]="work" [summary]="summary()" (back)="goBack()" />
-} @else {
-<div>Loading...</div>
-}
+<div class="mx-auto max-w-2xl p-4">
+  @if (workDetail$ | async; as work) {
+  <app-book-detail [work]="work" [summary]="summary()" (back)="goBack()" />
+  } @else {
+  <div class="text-sm text-zinc-400 animate-pulse">Loading details…</div>
+  }
+</div>

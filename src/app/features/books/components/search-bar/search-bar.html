@@ -1,3 +1,18 @@
-<input type="text" [value]="draft()" (input)="onInput($event)" (keydown.enter)="submit()" />
+<div class="flex gap-2">
+  <input
+    type="text"
+    class="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-400"
+    placeholder="Search a subject…"
+    aria-label="Search subject"
+    [field]="subjectField"
+    (keydown.enter)="submit()"
+  />
 
-<button type="button" (click)="submit()">Search</button>
+  <button
+    type="button"
+    class="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm hover:bg-zinc-50"
+    (click)="submit()"
+  >
+    Search
+  </button>
+</div>

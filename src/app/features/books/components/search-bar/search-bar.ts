@@ -1,27 +1,33 @@
-import { ChangeDetectionStrategy, Component, input, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output, signal, untracked } from '@angular/core';
+import { Field, form } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [],
+  imports: [Field],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchBar implements OnInit {
+export class SearchBar {
   value = input<string>('');
   searched = output<string>();
-  draft = signal('');
 
-  ngOnInit() {
-    this.draft.set(this.value() ?? '');
-  }
+  private readonly formModel = signal({ subject: '' });
+  readonly searchForm = form(this.formModel);
+  readonly subjectField = this.searchForm.subject;
 
-  onInput(e: Event) {
-    this.draft.set((e.target as HTMLInputElement).value);
+  constructor() {
+    effect(() => {
+      const incoming = this.value() ?? '';
+      const current = untracked(() => this.subjectField().value());
+      if (incoming !== current) {
+        this.subjectField().value.set(incoming);
+      }
+    });
   }
 
   submit(): void {
-    const normalized = this.normalize(this.draft());
+    const normalized = this.normalize(this.subjectField().value());
     if (normalized) {
       this.searched.emit(normalized);
     }
@@ -31,8 +37,8 @@ export class SearchBar implements OnInit {
     return v
       .trim()
       .toLowerCase()
-      .replaceAll(/([\s-]+)/g, '_')
-      .replaceAll(/_+/g, '_')
-      .replaceAll(/(^_+)|(_+$)/g, '');
+      .replace(/([\s-]+)/g, '_')
+      .replace(/_+/g, '_')
+      .replace(/^_+|_+$/g, '');
   }
 }
