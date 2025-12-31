@@ -1,1 +1,9 @@
-<p>book-detail works!</p>
+<button type="button" (click)="back.emit()">Back</button>
+<h1>{{ summary()?.title ?? work().title }}</h1>
+<p>{{ summary()?.authors ?? 'Authors unavailable' }}</p>
+
+@if (coverUrl(); as url) {
+<img [src]="url" [alt]="work().title" />
+}
+
+<p>{{ work().description }}</p>

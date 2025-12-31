@@ -1,3 +1,5 @@
-<div class="mx-auto max-w-xl p-4 space-y-4">
-  <app-book-detail />
-</div>
+@if (workDetail$ | async; as work) {
+<app-book-detail [work]="work" [summary]="summary()" (back)="goBack()" />
+} @else {
+<div>Loading...</div>
+}

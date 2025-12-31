@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { WorkDetail } from '../../../../shared/models/work-detail';
 
 @Component({
   selector: 'app-book-detail',
@@ -7,4 +8,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './book-detail.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookDetail {}
+export class BookDetail {
+  work = input.required<WorkDetail>();
+
+  summary = input<{ title: string; authors: string } | undefined>();
+
+  back = output<void>();
+
+  coverUrl = computed(() => {
+    const id = this.work().coverId;
+    return id ? `https://covers.openlibrary.org/b/id/${id}-L.jpg?default=false` : null;
+  });
+}
