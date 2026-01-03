@@ -8,14 +8,15 @@ Vai a: [Italiano](#open-library-app) · [English](#english-version)
 
 ## Live Demo & Repository
 
-- Live Demo: In arrivo (deploy in corso)
+- Live Demo: https://angular-open-library-app.netlify.app/
 - Repo: https://github.com/AgataDiCalogero/open-library-app
 
 ## Features
 
-- Browse by subject con search bar e chips "Popular subjects"
+- Browse by subject con search bar e chips "Popular subjects" (toggle show more)
 - Lista libri con cover da Open Library
 - Pagina dettaglio opera con back deterministico tramite query `subject`
+- Metadati arricchiti (anno, lingue, pagine, categorie) e link esterno a Open Library
 - Caching in-memory con repository pattern
 - Loading state ed empty state
 - Paginazione con `limit/offset` e bottone "Load more"
@@ -32,6 +33,7 @@ Vai a: [Italiano](#open-library-app) · [English](#english-version)
 - Open Library Subjects API: https://openlibrary.org/dev/docs/api/subjects
 - Supporto `limit`, `offset` e `work_count` per il totale risultati
 - Work detail via endpoint `/works/:id.json`
+- Fallback per lingue e pagine tramite `/works/:id/editions.json`
 
 ## Project Structure
 
@@ -49,6 +51,7 @@ Vai a: [Italiano](#open-library-app) · [English](#english-version)
 - `features/books/components` sono presentational, riusabili e senza logica di fetch.
 - Router input binding semplifica il passaggio di parametri e query param alle pagine.
 - La paginazione manuale limita le richieste cover e mantiene UX controllata.
+- Mapping DTO -> domain include sanitizzazione description e arricchimento metadati.
 
 ## Scripts / Commands
 
@@ -87,6 +90,7 @@ SPA rewrite (in `_redirects` o `netlify.toml`):
 ## Known limitations
 
 - Deep link su `/works/:id` senza `?subject` puo perdere la summary autori; la UI mostra fallback.
+- Alcuni work non espongono pagine/lingue; il fallback su editions potrebbe non coprire tutti i casi.
 
 ## Roadmap / Next steps
 
@@ -105,14 +109,15 @@ Portfolio project for Start2Impact: an Angular app to explore Open Library books
 
 ## Live Demo & Repository
 
-- Live Demo: Coming soon (deployment in progress)
+- Live Demo: https://angular-open-library-app.netlify.app/
 - Repo: https://github.com/AgataDiCalogero/open-library-app
 
 ## Features
 
-- Browse by subject with search bar and “Popular subjects” chips
+- Browse by subject with search bar and “Popular subjects” chips (show more toggle)
 - Book list with Open Library covers
 - Work detail page with deterministic back navigation via `subject` query param
+- Rich metadata (publish year, languages, pages, categories) and Open Library external link
 - In-memory caching using a repository pattern
 - Loading and empty states
 - Pagination using `limit/offset` with a manual “Load more” button
@@ -129,6 +134,7 @@ Portfolio project for Start2Impact: an Angular app to explore Open Library books
 - Open Library Subjects API: https://openlibrary.org/dev/docs/api/subjects
 - Supports `limit`, `offset`, and `work_count` for total results
 - Work detail via `/works/:id.json`
+- Languages/pages fallback via `/works/:id/editions.json`
 
 ## Project Structure
 
@@ -146,6 +152,7 @@ Portfolio project for Start2Impact: an Angular app to explore Open Library books
 - `features/books/components` are presentational and reusable, without fetch logic.
 - Router input binding simplifies passing params and query params into pages.
 - Manual pagination limits cover requests and keeps UX controlled.
+- DTO -> domain mapping includes description sanitization and metadata enrichment.
 
 ## Scripts / Commands
 
@@ -184,6 +191,7 @@ SPA rewrite (in `_redirects` or `netlify.toml`):
 ## Known limitations
 
 - Deep link to `/works/:id` without `?subject` may miss the author summary; the UI falls back.
+- Some works do not expose pages/languages; editions fallback might still miss certain cases.
 
 ## Roadmap / Next steps
 

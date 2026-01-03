@@ -20,3 +20,45 @@
     @apply text-brand underline underline-offset-4 hover:text-brand/80;
   }
 }
+
+@layer components {
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold leading-tight whitespace-nowrap transition;
+  }
+
+  .chip--neutral {
+    @apply border-ink/10 bg-white/80 text-ink/70;
+  }
+
+  .chip--muted {
+    @apply border-ink/10 bg-wash/60 text-ink/60;
+  }
+
+  .chip--active {
+    @apply border-brand bg-brand text-paper;
+  }
+
+  .chip--inactive {
+    @apply border-zinc-200 bg-white text-ink;
+  }
+
+  .chip--interactive {
+    @apply hover:border-brand/30 hover:bg-wash/40 hover:text-brand;
+  }
+
+  .chip--truncate {
+    @apply max-w-xs truncate;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold no-underline hover:no-underline transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+
+  .btn-outline {
+    @apply border border-ink/15 bg-white/80 text-ink shadow-sm hover:bg-wash/40;
+  }
+
+  .btn-primary {
+    @apply bg-brand text-paper shadow-sm hover:bg-brand/90;
+  }
+}

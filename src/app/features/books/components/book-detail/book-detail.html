@@ -2,10 +2,11 @@
   <!-- Back -->
   <button
     type="button"
-    class="inline-flex items-center gap-2 rounded-xl border border-ink/15 bg-white/80 px-4 py-2 text-sm font-medium text-ink shadow-sm transition hover:bg-wash/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+    class="btn btn-outline"
     (click)="back.emit()"
   >
-    ← Back
+    <app-icon name="arrow-left" [size]="16" />
+    Back
   </button>
 
   <!-- Header -->
@@ -27,6 +28,37 @@
         <span class="font-medium text-ink">Authors:</span>
         {{ summary()?.authors || 'Unknown' }}
       </p>
+
+      <div class="w-full rounded-xl border border-ink/10 bg-white/70 p-3 sm:max-w-md">
+        <ul class="space-y-1 text-sm text-ink/70">
+          @for (entry of metaEntries(); track entry.label) {
+          <li class="flex items-start gap-2">
+            <span class="min-w-20 font-medium text-ink">{{ entry.label }}:</span>
+            <span class="min-w-0">{{ entry.value }}</span>
+          </li>
+          }
+        </ul>
+      </div>
+
+      @if (subjectChips(); as chips) {
+      @if (chips.visible.length) {
+      <div class="space-y-2 pt-1">
+        <h2 class="text-xs font-semibold uppercase tracking-[0.24em] text-ink/60">Categories</h2>
+        <div class="flex flex-wrap gap-2">
+          @for (subject of chips.visible; track subject) {
+          <span class="chip chip--neutral chip--truncate" [attr.title]="subject">
+            {{ subject }}
+          </span>
+          }
+          @if (chips.canToggle) {
+          <button type="button" class="chip chip--muted chip--interactive" (click)="toggleSubjects()">
+            @if (chips.expanded) { Show less } @else { +{{ chips.hiddenCount }} more }
+          </button>
+          }
+        </div>
+      </div>
+      }
+      }
     </div>
   </div>
 
@@ -41,5 +73,17 @@
     } @else {
     <p class="mt-3 text-sm text-ink/60">No description available.</p>
     }
+
+    <div class="mt-4 flex justify-end">
+      <a
+        class="btn btn-primary w-full sm:w-auto"
+        [href]="work().openLibraryUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open on Open Library
+        <app-icon name="external-link" [size]="16" />
+      </a>
+    </div>
   </section>
 </div>
