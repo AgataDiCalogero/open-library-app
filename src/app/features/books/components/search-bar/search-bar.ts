@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, effect, input, output, signal, untracked } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+  output,
+  signal,
+  untracked,
+} from '@angular/core';
 import { Field, form } from '@angular/forms/signals';
 
 @Component({
@@ -45,8 +53,8 @@ export class SearchBar {
     return v
       .trim()
       .toLowerCase()
-      .replace(/([\s-]+)/g, '_')
-      .replace(/_+/g, '_')
-      .replace(/^_+|_+$/g, '');
+      .replaceAll(/([\s-]+)/g, '_')
+      .replaceAll(/_+/g, '_')
+      .replaceAll(/(^_+)|(_+$)/g, '');
   }
 }

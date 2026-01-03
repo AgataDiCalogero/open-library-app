@@ -28,6 +28,10 @@ export class BookDetail {
 
   private readonly subjectLimit = 6;
   readonly showAllSubjects = signal(false);
+  readonly resetSubjectsEffect = effect(() => {
+    this.work();
+    this.showAllSubjects.set(false);
+  });
 
   private readonly normalizedSubjects = computed(() => {
     const subjects = this.work().subjects ?? [];
@@ -69,11 +73,6 @@ export class BookDetail {
   coverUrl = computed(() => {
     const id = this.work().coverId;
     return id ? `https://covers.openlibrary.org/b/id/${id}-L.jpg?default=false` : null;
-  });
-
-  private readonly resetSubjectsEffect = effect(() => {
-    this.work();
-    this.showAllSubjects.set(false);
   });
 
   toggleSubjects(): void {

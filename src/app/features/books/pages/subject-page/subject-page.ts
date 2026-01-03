@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   effect,
   inject,
   input,
@@ -9,6 +10,7 @@ import {
   untracked,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 
 import { BooksRepository } from '../../data/books-repository';
@@ -27,6 +29,7 @@ import { normalizeSubjectLabel } from '../../../../shared/utils/subject-utils';
 export class SubjectPage {
   private readonly repo = inject(BooksRepository);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly limit = 24;
   readonly offset = signal(0);
@@ -127,7 +130,10 @@ export class SubjectPage {
 
     this.repo
       .getSubjectBooksPage(subject, this.limit, offset)
-      .pipe(finalize(() => loadingSignal.set(false)))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => loadingSignal.set(false))
+      )
       .subscribe({
         next: (result) => {
           this.total.set(result.total);

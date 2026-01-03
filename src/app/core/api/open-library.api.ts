@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { SubjectResponseDto } from './dto/subject-response.dto';
+import { SubjectResponseDto } from '../../shared/models/dto/subject-response.dto';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Book } from '../../shared/models/book';
 import { Observable, of } from 'rxjs';
 import { WorkDetail } from '../../shared/models/work-detail';
-import { WorkDetailDto } from './dto/work-detail.dto';
-import { WorkEditionDto, WorkEditionsResponseDto } from './dto/work-editions.dto';
+import { WorkDetailDto } from '../../shared/models/dto/work-detail.dto';
+import { WorkEditionDto, WorkEditionsResponseDto } from '../../shared/models/dto/work-editions.dto';
 
 export interface SubjectBooksResult {
   books: Book[];
@@ -77,9 +77,7 @@ export class OpenLibraryApi {
         const coverId = dto.covers?.find((value) => value > 0);
         const idSource = dto.key?.trim() || workId;
         const normalizedId = idSource.split('/').pop() ?? idSource;
-        const openLibraryKey = idSource.startsWith('/works/')
-          ? idSource
-          : `/works/${normalizedId}`;
+        const openLibraryKey = idSource.startsWith('/works/') ? idSource : `/works/${normalizedId}`;
 
         return {
           id: normalizedId,
@@ -150,7 +148,7 @@ export class OpenLibraryApi {
     if (!value) {
       return undefined;
     }
-    const match = value.match(/\b(1[5-9]\d{2}|20\d{2})\b/);
+    const match = /\b(1[5-9]\d{2}|20\d{2})\b/.exec(value);
     return match ? Number(match[0]) : undefined;
   }
 
@@ -160,7 +158,7 @@ export class OpenLibraryApi {
     }
     const mapped = languages
       .map((language) => language.key.split('/').pop()?.trim())
-      .filter((code): code is string => Boolean(code));
+      .filter((code): code is string => !!code);
     return mapped.length ? mapped : undefined;
   }
 
@@ -197,9 +195,9 @@ export class OpenLibraryApi {
     const url = `${this.baseUrl}/works/${encoded}/editions.json`;
     const params = new HttpParams().set('limit', '50');
 
-    return this.http.get<WorkEditionsResponseDto>(url, { params }).pipe(
-      map((dto) => dto.entries ?? [])
-    );
+    return this.http
+      .get<WorkEditionsResponseDto>(url, { params })
+      .pipe(map((dto) => dto.entries ?? []));
   }
 
   private extractEditionPages(edition?: WorkEditionDto): number | undefined {
@@ -214,7 +212,7 @@ export class OpenLibraryApi {
     if (!pagination) {
       return undefined;
     }
-    const match = pagination.match(/\d+/);
+    const match = /\d+/.exec(pagination);
     return match ? Number(match[0]) : undefined;
   }
 }
