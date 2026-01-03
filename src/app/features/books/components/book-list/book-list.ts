@@ -6,7 +6,6 @@ import { BookCard } from '../book-card/book-card';
   selector: 'app-book-list',
   imports: [BookCard],
   templateUrl: './book-list.html',
-  styleUrl: './book-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookList {

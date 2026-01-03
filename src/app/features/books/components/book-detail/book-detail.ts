@@ -16,7 +16,6 @@ import { normalizeSubjectLabel } from '../../../../shared/utils/subject-utils';
   selector: 'app-book-detail',
   imports: [Icon],
   templateUrl: './book-detail.html',
-  styleUrl: './book-detail.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetail {
