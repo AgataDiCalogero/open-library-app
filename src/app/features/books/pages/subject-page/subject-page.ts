@@ -23,7 +23,6 @@ import { normalizeSubjectLabel } from '../../../../shared/utils/subject-utils';
   selector: 'app-subject-page',
   imports: [SearchBar, BookList],
   templateUrl: './subject-page.html',
-  styleUrl: './subject-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubjectPage {
@@ -38,8 +37,6 @@ export class SubjectPage {
   readonly isInitialLoading = signal(false);
   readonly isLoadingMore = signal(false);
   readonly searchResetToken = signal(0);
-  readonly showAllPopular = signal(false);
-  private readonly popularLimit = 8;
 
   readonly popularSubjects = [
     'fantasy',
@@ -53,17 +50,6 @@ export class SubjectPage {
     'biography',
     'travel',
   ];
-
-  readonly popularSubjectChips = computed(() => {
-    const limit = this.showAllPopular() ? this.popularSubjects.length : this.popularLimit;
-    const visible = this.popularSubjects.slice(0, limit);
-    return {
-      visible,
-      hiddenCount: Math.max(this.popularSubjects.length - visible.length, 0),
-      canToggle: this.popularSubjects.length > this.popularLimit,
-      expanded: this.showAllPopular(),
-    };
-  });
 
   readonly canLoadMore = computed(() => {
     const total = this.total();
@@ -80,7 +66,6 @@ export class SubjectPage {
         this.booksAccumulated.set([]);
         this.total.set(null);
         this.isLoadingMore.set(false);
-        this.showAllPopular.set(false);
       });
 
       if (!subject) {
@@ -98,12 +83,7 @@ export class SubjectPage {
 
   onSearchFromChip(subject: string): void {
     this.searchResetToken.update((value) => value + 1);
-    this.showAllPopular.set(false);
     this.router.navigate(['/subjects', subject]);
-  }
-
-  togglePopularSubjects(): void {
-    this.showAllPopular.update((value) => !value);
   }
 
   onOpenBook(book: Book): void {

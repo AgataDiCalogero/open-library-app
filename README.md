@@ -13,7 +13,7 @@ Vai a: [Italiano](#open-library-app) · [English](#english-version)
 
 ## Features
 
-- Browse by subject con search bar e chips "Popular subjects" (toggle show more)
+- Browse by subject con search bar e chips "Popular subjects" responsive
 - Lista libri con cover da Open Library
 - Pagina dettaglio opera con back deterministico tramite query `subject`
 - Metadati arricchiti (anno, lingue, pagine, categorie) e link esterno a Open Library
@@ -37,9 +37,14 @@ Vai a: [Italiano](#open-library-app) · [English](#english-version)
 
 ## Project Structure
 
-- `src/app/core/` - API client, DTO, error handling
-- `src/app/features/` - feature "books" con components, data, pages
-- `src/app/shared/` - modelli condivisi
+- `src/app/core/api/` - API client Open Library
+- `src/app/features/books/components/` - UI components (search, list, detail)
+- `src/app/features/books/data/` - repository + cache
+- `src/app/features/books/pages/` - pagine e orchestrazione stato
+- `src/app/shared/components/icon/` - icone condivise
+- `src/app/shared/interceptors/errors/` - HTTP error handling
+- `src/app/shared/models/` - modelli dominio + DTO
+- `src/app/shared/utils/` - utility comuni
 - `src/environments/` - config ambienti
 - `src/styles.css` - theme tokens Tailwind
 
@@ -114,7 +119,7 @@ Portfolio project for Start2Impact: an Angular app to explore Open Library books
 
 ## Features
 
-- Browse by subject with search bar and “Popular subjects” chips (show more toggle)
+- Browse by subject with search bar and responsive “Popular subjects” chips
 - Book list with Open Library covers
 - Work detail page with deterministic back navigation via `subject` query param
 - Rich metadata (publish year, languages, pages, categories) and Open Library external link
@@ -138,9 +143,14 @@ Portfolio project for Start2Impact: an Angular app to explore Open Library books
 
 ## Project Structure
 
-- `src/app/core/` - API client, DTOs, error handling
-- `src/app/features/` - “books” feature with components, data, pages
-- `src/app/shared/` - shared models
+- `src/app/core/api/` - Open Library API client
+- `src/app/features/books/components/` - UI components (search, list, detail)
+- `src/app/features/books/data/` - repository + cache
+- `src/app/features/books/pages/` - pages and state orchestration
+- `src/app/shared/components/icon/` - shared icons
+- `src/app/shared/interceptors/errors/` - HTTP error handling
+- `src/app/shared/models/` - domain models + DTOs
+- `src/app/shared/utils/` - shared utilities
 - `src/environments/` - environment config
 - `src/styles.css` - Tailwind theme tokens
 

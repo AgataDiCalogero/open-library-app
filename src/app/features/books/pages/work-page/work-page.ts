@@ -11,7 +11,6 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-work-page',
   imports: [BookDetail, AsyncPipe],
   templateUrl: './work-page.html',
-  styleUrl: './work-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkPage {

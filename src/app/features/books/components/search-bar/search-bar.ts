@@ -13,7 +13,6 @@ import { Field, form } from '@angular/forms/signals';
   selector: 'app-search-bar',
   imports: [Field],
   templateUrl: './search-bar.html',
-  styleUrl: './search-bar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBar {

@@ -12,7 +12,7 @@
   <!-- Header -->
   <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
     <!-- Cover -->
-    <div class="h-48 w-32 shrink-0 overflow-hidden rounded-2xl bg-wash/70 shadow-sm sm:h-56 sm:w-40">
+    <div class="h-48 w-32 shrink-0 self-center overflow-hidden rounded-2xl bg-wash/70 shadow-sm sm:h-56 sm:w-40 sm:self-start">
       @if (coverUrl(); as url) {
       <img class="h-full w-full object-cover" [src]="url" [alt]="work().title" loading="lazy" />
       }
@@ -24,20 +24,17 @@
         {{ work().title }}
       </h1>
 
-      <p class="text-sm text-ink/70">
-        <span class="font-medium text-ink">Authors:</span>
-        {{ summary()?.authors || 'Unknown' }}
-      </p>
-
-      <div class="w-full rounded-xl border border-ink/10 bg-white/70 p-3 sm:max-w-md">
-        <ul class="space-y-1 text-sm text-ink/70">
-          @for (entry of metaEntries(); track entry.label) {
-          <li class="flex items-start gap-2">
-            <span class="min-w-20 font-medium text-ink">{{ entry.label }}:</span>
-            <span class="min-w-0">{{ entry.value }}</span>
-          </li>
-          }
-        </ul>
+      <div class="space-y-1 text-sm text-ink/70">
+        <p>
+          <span class="font-medium text-ink">Authors:</span>
+          {{ summary()?.authors || 'Unknown' }}
+        </p>
+        @for (entry of metaEntries(); track entry.label) {
+        <p>
+          <span class="font-medium text-ink">{{ entry.label }}:</span>
+          {{ entry.value }}
+        </p>
+        }
       </div>
 
       @if (subjectChips(); as chips) {

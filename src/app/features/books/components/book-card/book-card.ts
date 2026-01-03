@@ -10,7 +10,6 @@ import { Book } from '../../../../shared/models/book';
 @Component({
   selector: 'app-book-card',
   templateUrl: './book-card.html',
-  styleUrl: './book-card.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookCard {
